@@ -1,0 +1,14 @@
+*.py[co]
+*~
+\#*\#
+*.swp
+*.egg
+*.egg-info
+dist
+build
+eggs
+bin
+develop-eggs
+.installed.cfg
+pip-log.txt
+env/
