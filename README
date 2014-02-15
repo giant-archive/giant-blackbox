@@ -1,1 +1,36 @@
 blackbox
+========
+
+Introduction
+------------
+
+This is a simple test suite which runs some back black-box tests (See: http://en.wikipedia.org/wiki/Black-box_testing) on a given website.
+
+It was designed with the following considerations in mind:
+
+- It should be executed via Bamboo.
+- It should be executed in a Unix environment, with Python 2.7, pip and virtualenv available.
+- It should be configured by an environment variable, called `BAMBOO_DOMAIN`.
+- The tests chould be throttled, so as to not overwhelm the web server.
+- It should report the test results in XUnit format.
+
+Running the tests
+-----------------
+
+- Setup the environment:
+
+    # virtualenv env
+
+    # source env/bin/activate
+
+    # pip install -r etc/requirements.txt
+
+- Then, run the tests:
+
+    # nosetests src --with-xunit
+
+
+Credits
+-------
+
+A lot of this was copied from and inspired by Leon's code: https://gist.github.com/leonsmith/75ed9c221fde3bf17d4f
