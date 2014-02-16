@@ -3,6 +3,7 @@ import json
 import time
 import os
 import requests
+import re
 
 from BeautifulSoup import BeautifulSoup
 from selenium import webdriver
@@ -135,7 +136,7 @@ class TestStaticFiles(BlackBoxTestCase):
 
         # Figure out the favicon
         soup = BeautifulSoup(response.content)
-        icon_element = soup.find("link", rel="shortcut icon")
+        icon_element = soup.find("link", rel=re.compile('.*icon.*'))
 
         # If we figured out a favicon element, then we'll use that.
         if icon_element:
