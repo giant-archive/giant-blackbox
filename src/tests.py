@@ -1,8 +1,11 @@
 import binascii
+import json
 import time
 import os
 import requests
+
 from BeautifulSoup import BeautifulSoup
+from selenium import webdriver
 
 import unittest
 from unittest.util import safe_repr
@@ -47,10 +50,10 @@ class BlackBoxTestCase(unittest.TestCase):
     def tearDown(self):
         """
         In our tearDown method, we pause between each test. This is a
-        really crappy to prevent overwhelming a site.
+        really crappy way to prevent overwhelming a site.
         """
 
-        time.sleep(4)
+        time.sleep(2)
 
 
     def assertResponseIsOk(self, response, msg=None):
@@ -145,6 +148,41 @@ class TestStaticFiles(BlackBoxTestCase):
         # Get the favicon
         icon_response = self.session.get(icon_url)
         self.assertResponseIsOk(icon_response)
+
+
+class TestOnPage(BlackBoxTestCase):
+    """
+    This uses the Selenium WebDriver to evaluate the page and allow us to inspect it.
+    """
+
+    def test_page_resources(self):
+        """
+        This test will fail if any resources loaded by the index page source returns anything
+        but a 200 response.
+        """
+
+        # Setup the PhantomJS session.
+        self.phantom = webdriver.PhantomJS("/usr/local/share/npm/bin/phantomjs", 9999)
+
+        # Grab the page.
+        self.phantom.get(self.domain)
+
+        print "PHANTOM IS: %s" % self.phantom
+
+        # Grab the HAR log.
+        raw_log = self.phantom.get_log('har')
+
+        # Parse the log
+        log = json.loads(raw_log[0]['message'])
+
+        # Find any of the responses where the status code isn't 200.
+        failing_requests = filter(lambda x: 200 != x['response']['status'], log['log']['entries'])
+
+        # Fail the test if any page requests have failed.
+        self.assertEquals(len(failing_requests), 0)
+
+        # Tidy up.
+        self.phantom.quit()
 
 
 class TestSitemap(BlackBoxTestCase):
