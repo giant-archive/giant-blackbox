@@ -169,6 +169,9 @@ class TestOnPage(BlackBoxTestCase):
 
         # Save the screenshot.
         self.phantom.set_window_size(1024, 768)
+
+        # Pause for a few seconds, then snap the screenshow.
+        time.sleep(5)
         self.phantom.save_screenshot("screenshot.png")
 
         # Pass the test.
@@ -186,8 +189,6 @@ class TestOnPage(BlackBoxTestCase):
 
         # Grab the page.
         self.phantom.get(self.domain)
-
-        print "PHANTOM IS: %s" % self.phantom
 
         # Grab the HAR log.
         raw_log = self.phantom.get_log('har')
