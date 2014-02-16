@@ -2,6 +2,7 @@ import binascii
 import time
 import os
 import requests
+from BeautifulSoup import BeautifulSoup
 
 import unittest
 from unittest.util import safe_repr
@@ -49,7 +50,7 @@ class BlackBoxTestCase(unittest.TestCase):
         really crappy to prevent overwhelming a site.
         """
 
-        time.sleep(4)
+        #time.sleep(4)
 
 
     def assertResponseIsOk(self, response, msg=None):
@@ -119,6 +120,31 @@ class TestStaticFiles(BlackBoxTestCase):
         response = self.session.get('%s/robots.txt' % self.domain)
         self.assertResponseIsOk(response)
         self.assertResponseDoesNotContain(response, "Disallow: /\n")
+
+
+    def test_favicon(self):
+        """
+        Tests that a favicon exists
+        """
+
+        # First, check the source for a custom favicon declaration
+        response = self.session.get(self.domain)
+
+        # Figure out the favicon
+        soup = BeautifulSoup(response.content)
+        icon_element = soup.find("link", rel="shortcut icon")
+
+        # If we figured out a favicon element, then we'll use that.
+        if icon_element:
+            icon_url = "%s/%s" % (self.domain, icon_element['href'])
+
+        # If we couldn't find a favicon reference in the source, then use the default /favicon.ico
+        else:
+            icon_url = "%s/favicon.ico" % self.domain
+
+        # Get the favicon
+        icon_response = self.session.get(icon_url)
+        self.assertResponseIsOk(icon_response)
 
 
 class TestSitemap(BlackBoxTestCase):
