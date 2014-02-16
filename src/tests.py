@@ -50,7 +50,7 @@ class BlackBoxTestCase(unittest.TestCase):
         really crappy to prevent overwhelming a site.
         """
 
-        #time.sleep(4)
+        time.sleep(4)
 
 
     def assertResponseIsOk(self, response, msg=None):
@@ -110,7 +110,7 @@ class TestStaticFiles(BlackBoxTestCase):
     def test_robots_txt_present(self):
         response = self.session.get('%s/robots.txt' % self.domain)
         self.assertResponseIsOk(response)
-        self.assertResponseHeaderEquals(response, 'content-type', 'text/plain')
+        self.assertResponseHeadersContains(response, 'content-type', 'text/plain')
 
 
     def test_robots_txt_disallow(self):
