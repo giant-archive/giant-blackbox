@@ -155,6 +155,23 @@ class TestOnPage(BlackBoxTestCase):
     This uses the Selenium WebDriver to evaluate the page and allow us to inspect it.
     """
 
+
+    def test_screenshot(self):
+        """
+        This takes a PNG screenshot of a give site. This test should always pass (unless Phantom is very broken).
+        """
+
+        # Setup the PhantomJS session.
+        self.phantom = webdriver.PhantomJS("/opt/phantomjs/bin/phantomjs")
+
+        # Grab the page.
+        self.phantom.get(self.domain)
+
+        # Save the screenshot.
+        self.phantom.set_window_size(1024, 768)
+        self.phantom.save_screenshot("screenshot.png")
+
+
     def test_page_resources(self):
         """
         This test will fail if any resources loaded by the index page source returns anything
@@ -162,7 +179,7 @@ class TestOnPage(BlackBoxTestCase):
         """
 
         # Setup the PhantomJS session.
-        self.phantom = webdriver.PhantomJS("/usr/local/share/npm/bin/phantomjs", 9999)
+        self.phantom = webdriver.PhantomJS("/opt/phantomjs/bin/phantomjs")
 
         # Grab the page.
         self.phantom.get(self.domain)
