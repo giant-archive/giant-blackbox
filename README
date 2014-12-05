@@ -14,23 +14,53 @@ It was designed with the following considerations in mind:
 - The tests chould be throttled, so as to not overwhelm the web server.
 - It should report the test results in XUnit format.
 
-Running the tests
------------------
+Dependencies
+------------
 
-- Setup the environment:
+You'll need `phantomjs`. You can install this on your local machine (OSX), like so:
 
-    # virtualenv env
+	$ brew install phantomjs
 
-    # source env/bin/activate
+The code assumes that `phantomjs` is installed into `/opt/`, if you have installed to a different location, then you'll need to grep for the `phantomjs` locations in `test.py` and amend as needed.
+	
+You'll need a `phantomjs` WebDriver installed, too. If you use Chrome, you can get the latest version of the Chrome WebDriver from here:
 
-    # pip install -r etc/requirements.txt
+http://chromedriver.storage.googleapis.com/index.html
 
-- Then, run the tests:
+After you have unzipped the package, you need to move the binary to somewhere in your `PATH`:
 
-    # nosetests src --with-xunit
+	$ sudo mv ~/Downloads/chromedriver /usr/local/bin/
+
+Setup
+-----
+
+First, setup the environment:
+
+	$ make setup
+
+Then, if you want to run a quick test, point it at a domain:
+
+	$ export BAMBOO_DOMAIN="http://www.bbc.co.uk"
+	$ make
+
+Usage
+-----
+
+The code is designed to be run from a CI system. In our case, we use Atlassian Bamboo.
+
+Todo: Add Bamboo documentation.
+
+You can also run the code from your local machine, by first setting the `BAMBOO_DOMAIN` environment variable, then running `make`:
+
+	$ export BAMBOO_DOMAIN="http://www.yourdomain.com"
+	$ make
+
+The output will be dumped into `nosetests.xml`, which you can then analyse however you want - using a CI platform usually makes this pretty easy.
 
 
 Credits
 -------
 
-A lot of this was copied from and inspired by Leon's code: https://gist.github.com/leonsmith/75ed9c221fde3bf17d4f
+A lot of this was copied from and inspired by Leon Smith's code: 
+
+https://gist.github.com/leonsmith/75ed9c221fde3bf17d4f
