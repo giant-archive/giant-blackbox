@@ -1,10 +1,14 @@
 blackbox
 ========
 
+
+This is a simple test suite which runs some back black-box tests on a given website.
+
+Further Reading: http://en.wikipedia.org/wiki/Black-box_testing
+
 Introduction
 ------------
 
-This is a simple test suite which runs some back black-box tests (See: http://en.wikipedia.org/wiki/Black-box_testing) on a given website.
 
 It was designed with the following considerations in mind:
 
