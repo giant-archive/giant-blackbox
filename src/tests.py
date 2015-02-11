@@ -8,6 +8,8 @@ from datetime import datetime
 import requests_cache
 from BeautifulSoup import BeautifulSoup
 
+start_time = datetime.now()
+
 
 class BlackBoxTestCase(unittest.TestCase):
     """
@@ -33,10 +35,10 @@ class BlackBoxTestCase(unittest.TestCase):
 
         # We're done with the domain manipulation.
         self.domain = domain
-        self.domain_404 = "%s/does-not-exist-%s" % (self.domain, datetime.now())
+        self.domain_404 = "%s/does-not-exist-%s" % (self.domain, int(start_time))
 
         # Setup the requests session.
-        self.session = requests_cache.CachedSession()
+        self.session = requests_cache.CachedSession(backend='memory', cache_name='cache_%s' % int(start_time))
         self.session.timeout = 5
         self.session.headers.update({'User-Agent': 'FARM Digital Black Box Test Agent 1.0'})
 
