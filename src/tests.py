@@ -102,7 +102,7 @@ class TestRedirects(BlackBoxTestCase):
         for url in urls:
             response = self.session.get(url)
             self.assertResponseIsOk(response)
-            self.assertResponseRedirectsTo(response, self.domain)
+            self.assertResponseRedirectsTo(response, "%s/" %self.domain)
             self.assertResponseMaxRedirects(response, 1)
 
 
