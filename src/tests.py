@@ -36,10 +36,6 @@ class BlackBoxTestCase(unittest.TestCase):
         if domain.endswith("/"):
             domain = domain[:-1]
 
-        # Make sure we add the 'www' subdomain.
-        if "www." not in domain:
-            domain = domain.replace("http://", "http://www.")
-
         # We're done with the domain manipulation.
         self.domain = domain
 
@@ -100,9 +96,11 @@ class TestRedirects(BlackBoxTestCase):
     """
 
     def test_canonical_redirect(self):
-        response = self.session.get(self.domain.replace("www.", ""))
+
+        source = self.domain.replace("www.", '') if "www." in self.domain else "www.%s" % self.domain
+        response = self.session.get(source)
         self.assertResponseIsOk(response)
-        self.assertResponseRedirectsTo(response, "%s/" % self.domain)
+        self.assertResponseRedirectsTo(response, self.domain)
         self.assertResponseMaxRedirects(response, 1)
 
 
@@ -156,7 +154,6 @@ class TestOnPage(BlackBoxTestCase):
     This uses the Selenium WebDriver to evaluate the page and allow us to inspect it.
     """
 
-
     def test_screenshot(self):
         """
         This takes a PNG screenshot of a give site. This test should always pass (unless Phantom is very broken).
@@ -177,7 +174,6 @@ class TestOnPage(BlackBoxTestCase):
 
         # Pass the test.
         self.assertEqual(True, True)
-
 
     def test_page_resources(self):
         """
@@ -219,7 +215,6 @@ class TestSitemap(BlackBoxTestCase):
         self.assertResponseContains(response, '<loc>')
         self.assertResponseContains(response, '</loc>')
 
-
     def test_sitemap_correct_site_object(self):
         """
         This tests that the sitemap is being generated with the correct Site object.
@@ -228,9 +223,7 @@ class TestSitemap(BlackBoxTestCase):
 
         response = self.session.get('%s/sitemap.xml' % self.domain)
         self.assertResponseIsOk(response)
-        self.assertResponseDoesNotContain(response, "dev.wearefarm.com")
-
-
+        self.assertResponseDoesNotContain(response, "wearefarm.com")
 
     def test_child_sitemaps(self):
         """
@@ -246,7 +239,6 @@ class TestHeaders(BlackBoxTestCase):
     def setUp(self):
         super(TestHeaders, self).setUp()
 
-
     def test_gzip_enabled(self):
         response = self.session.get(self.domain)
         self.assertResponseHeaderEquals(response, 'content-encoding', 'gzip')
@@ -261,7 +253,6 @@ class TestResponseCodes(BlackBoxTestCase):
         response = self.session.get(self.domain)
         self.assertResponseIsOk(response)
         self.assertResponseHeadersContains(response, 'content-type', 'text/html')
-
 
     def test_404(self):
         random_junk = binascii.b2a_hex(os.urandom(15))
