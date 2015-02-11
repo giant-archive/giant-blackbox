@@ -92,14 +92,12 @@ class TestRedirects(BlackBoxTestCase):
         for protocol in ['https://', 'http://']:
             urls += ["%s%s" % (protocol, root_domain), "%swww.%s" % (protocol, root_domain)]
 
-        print urls
         # Pop our final domain
         urls.remove(self.domain)
 
         # Remove https is we are not running on https
-        urls = [url for url in urls if 'https://' in url and not https]
-
-        print urls
+        if not https:
+            urls = [url for url in urls if 'https://' not in url]
 
         for url in urls:
             response = self.session.get(url)
