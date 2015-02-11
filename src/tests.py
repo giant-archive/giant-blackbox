@@ -29,7 +29,7 @@ class BlackBoxTestCase(unittest.TestCase):
         domain = os.getenv("BAMBOO_DOMAIN", False)
 
         # Make sure it contains http://
-        if not "http://" in domain:
+        if "http://" not in domain:
             domain = "http://%s" % domain
 
         # Make we remove any trailing slash.
@@ -37,7 +37,7 @@ class BlackBoxTestCase(unittest.TestCase):
             domain = domain[:-1]
 
         # Make sure we add the 'www' subdomain.
-        if not "www." in domain:
+        if "www." not in domain:
             domain = domain.replace("http://", "http://www.")
 
         # We're done with the domain manipulation.
