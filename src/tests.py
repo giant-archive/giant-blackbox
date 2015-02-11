@@ -142,7 +142,7 @@ class TestStaticFiles(BlackBoxTestCase):
 
         # If we couldn't find a favicon reference in the source, then use the default /favicon.ico
         else:
-            icon_url = "%s/favicon.ico" % self.domain
+            icon_url = "%sfavicon.ico" % self.domain
 
         # Get the favicon
         icon_response = self.session.get(icon_url)
