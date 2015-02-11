@@ -138,7 +138,7 @@ class TestStaticFiles(BlackBoxTestCase):
 
         # If we figured out a favicon element, then we'll use that.
         if icon_element:
-            icon_url = "%s/%s" % (self.domain, icon_element['href'])
+            icon_url = "%s%s" % (self.domain, icon_element['href'])
 
         # If we couldn't find a favicon reference in the source, then use the default /favicon.ico
         else:
