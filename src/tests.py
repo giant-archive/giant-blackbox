@@ -1,4 +1,5 @@
 from urlparse import urljoin
+import uuid
 import os
 import re
 import unittest
@@ -8,8 +9,7 @@ from datetime import datetime
 import requests_cache
 from BeautifulSoup import BeautifulSoup
 
-start_time = datetime.now()
-
+run_uuid = uuid.uuid4().hex
 
 class BlackBoxTestCase(unittest.TestCase):
     """
@@ -35,10 +35,10 @@ class BlackBoxTestCase(unittest.TestCase):
 
         # We're done with the domain manipulation.
         self.domain = domain
-        self.domain_404 = "%s/does-not-exist-%s" % (self.domain, int(start_time))
+        self.domain_404 = "%s/does-not-exist-%s" % (self.domain, run_uuid)
 
         # Setup the requests session.
-        self.session = requests_cache.CachedSession(backend='memory', cache_name='cache_%s' % int(start_time))
+        self.session = requests_cache.CachedSession(backend='memory', cache_name='cache_%s' % run_uuid)
         self.session.timeout = 5
         self.session.headers.update({'User-Agent': 'FARM Digital Black Box Test Agent 1.0'})
 
