@@ -1,3 +1,4 @@
+from urlparse import urljoin
 import os
 import re
 import unittest
@@ -102,7 +103,7 @@ class TestRedirects(BlackBoxTestCase):
         for url in urls:
             response = self.session.get(url)
             self.assertResponseIsOk(response)
-            self.assertResponseRedirectsTo(response, "%s/" %self.domain)
+            self.assertResponseRedirectsTo(response, "%s/" % self.domain)
             self.assertResponseMaxRedirects(response, 1)
 
 
@@ -138,11 +139,11 @@ class TestStaticFiles(BlackBoxTestCase):
 
         # If we figured out a favicon element, then we'll use that.
         if icon_element:
-            icon_url = "%s%s" % (self.domain, icon_element['href'])
+            icon_url = urljoin(self.domain, icon_element['href'])
 
         # If we couldn't find a favicon reference in the source, then use the default /favicon.ico
         else:
-            icon_url = "%sfavicon.ico" % self.domain
+            icon_url = urljoin(self.domain, '/favicon.ico')
 
         # Get the favicon
         icon_response = self.session.get(icon_url)
