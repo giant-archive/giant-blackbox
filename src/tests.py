@@ -26,7 +26,7 @@ class BlackBoxTestCase(unittest.TestCase):
         super(BlackBoxTestCase, self).setUp()
 
         # Get the domain from the environment variable.
-        domain = os.getenv("BAMBOO_DOMAIN", False)
+        domain = os.getenv("BAMBOO_DOMAIN", '')
 
         # Make sure it contains http://
         if "http://" not in domain:
