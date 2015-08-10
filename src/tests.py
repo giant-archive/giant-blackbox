@@ -1,15 +1,15 @@
-from urlparse import urljoin
-import uuid
 import os
 import re
 import unittest
 import unittest.util
-from datetime import datetime
+import uuid
+from urlparse import urljoin
 
 import requests_cache
 from BeautifulSoup import BeautifulSoup
 
 run_uuid = uuid.uuid4().hex
+
 
 class BlackBoxTestCase(unittest.TestCase):
     """
@@ -26,6 +26,7 @@ class BlackBoxTestCase(unittest.TestCase):
 
         # Get the domain from the environment variable.
         domain = os.getenv("BAMBOO_DOMAIN")
+        verify = bool(os.getenv('SSL_VERIFY', 1))
 
         assert "http://" in domain or 'https://' in domain
 
@@ -40,6 +41,7 @@ class BlackBoxTestCase(unittest.TestCase):
         # Setup the requests session.
         self.session = requests_cache.CachedSession(backend='memory', cache_name='cache_%s' % run_uuid)
         self.session.timeout = 5
+        self.session.verify = verify
         self.session.headers.update({'User-Agent': 'FARM Digital Black Box Test Agent 1.0'})
 
     def tearDown(self):
