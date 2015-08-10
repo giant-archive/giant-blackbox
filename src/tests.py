@@ -26,7 +26,7 @@ class BlackBoxTestCase(unittest.TestCase):
 
         # Get the domain from the environment variable.
         domain = os.getenv("BAMBOO_DOMAIN")
-        verify = bool(os.getenv('SSL_VERIFY', 1))
+        verify = bool(os.getenv('BAMBOO_SSL_VERIFY', 1))
 
         assert "http://" in domain or 'https://' in domain
 
