@@ -58,7 +58,6 @@ class BlackBoxTestCase(unittest.TestCase):
 
     def assertResponseRedirectsTo(self, response, expected, msg=None):
         self.assertTrue(response.history, 'No redirection')
-        self._baseAssertEqual(response.url, expected, msg=msg)
         self.assertTrue(expected in response.url, msg=msg)
 
     def assertResponseMaxRedirects(self, response, maximum, msg=None):
