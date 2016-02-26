@@ -28,6 +28,8 @@ class BlackBoxTestCase(unittest.TestCase):
         domain = os.getenv("BAMBOO_DOMAIN")
         verify = bool(int(os.getenv('BAMBOO_SSL_VERIFY', 1)))
 
+        self.www = bool(int(os.getenv('BAMBOO_WWW_CHECK', 1)))
+
         assert "http://" in domain or 'https://' in domain
 
         # Make we remove any trailing slash.
@@ -95,7 +97,9 @@ class TestRedirects(BlackBoxTestCase):
 
         # Build a list of urls to check
         for protocol in ['https://', 'http://']:
-            urls += ["%s%s" % (protocol, root_domain), "%swww.%s" % (protocol, root_domain)]
+            urls.append("%s%s" % (protocol, root_domain))
+            if self.www:
+                urls.append("%swww.%s" % (protocol, root_domain))
 
         # Pop our final domain
         urls.remove(self.domain)
