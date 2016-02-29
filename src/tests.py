@@ -24,6 +24,7 @@ class BlackBoxTestCase(unittest.TestCase):
 
         super(BlackBoxTestCase, self).setUp()
 
+        print os.environ
         # Get the domain from the environment variable.
         domain = os.getenv("BAMBOO_DOMAIN")
         verify = bool(int(os.getenv('BAMBOO_SSL_VERIFY', 1)))
