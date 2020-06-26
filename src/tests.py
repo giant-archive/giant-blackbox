@@ -3,10 +3,10 @@ import re
 import unittest
 import unittest.util
 import uuid
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import requests_cache
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 run_uuid = uuid.uuid4().hex
 
@@ -25,8 +25,8 @@ class BlackBoxTestCase(unittest.TestCase):
         super(BlackBoxTestCase, self).setUp()
 
         # Get the domain from the environment variable.
-        domain = os.getenv("BAMBOO_DOMAIN")
-        verify = bool(int(os.getenv('BAMBOO_SSL_VERIFY', 1)))
+        domain = os.getenv("HOSTNAME")
+        verify = bool(int(os.getenv('SSL_VERIFY', 1)))
 
         self.www = bool(int(os.getenv('bamboo_www_check', 1)))
 
