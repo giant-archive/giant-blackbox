@@ -1,69 +1,32 @@
-blackbox
-========
-
+# blackbox
 
 This is a simple test suite which runs some back black-box tests on a given website.
 
 Further Reading: http://en.wikipedia.org/wiki/Black-box_testing
 
-Introduction
-------------
-
+## Introduction
 
 It was designed with the following considerations in mind:
 
-- It should be executed via Bamboo.
-- It should be executed in a Unix environment, with Python 2.7, pip and virtualenv available.
-- It should be configured by an environment variable, called `BAMBOO_DOMAIN`.
-- The tests chould be throttled, so as to not overwhelm the web server.
-- It should report the test results in XUnit format.
+- It should be run via a Github action.
+- It should take a single argument, a hostname, and not require any further information about a given domain.
+- The tests should behave well, so as to not overwhelm the application server.
+- It should generate an XUnit artifact.
+- It should also report to a Slack channel.
 
-Dependencies
-------------
+## Dependencies
 
-You'll need `phantomjs`. You can install this on your local machine (OSX), like so:
+TBC
 
-	$ brew install phantomjs
+## Setup
 
-The code assumes that `phantomjs` is installed into `/opt/`, if you have installed to a different location, then you'll need to grep for the `phantomjs` locations in `test.py` and amend as needed.
-	
-You'll need a `phantomjs` WebDriver installed, too. If you use Chrome, you can get the latest version of the Chrome WebDriver from here:
+TBC
 
-http://chromedriver.storage.googleapis.com/index.html
+## Usage
 
-After you have unzipped the package, you need to move the binary to somewhere in your `PATH`:
+TBC
 
-	$ sudo mv ~/Downloads/chromedriver /usr/local/bin/
-
-Setup
------
-
-First, setup the environment:
-
-	$ make setup
-
-Then, if you want to run a quick test, point it at a domain:
-
-	$ export BAMBOO_DOMAIN="http://www.bbc.co.uk"
-	$ make
-
-Usage
------
-
-The code is designed to be run from a CI system. In our case, we use Atlassian Bamboo.
-
-Todo: Add Bamboo documentation.
-
-You can also run the code from your local machine, by first setting the `BAMBOO_DOMAIN` environment variable, then running `make`:
-
-	$ export BAMBOO_DOMAIN="http://www.yourdomain.com"
-	$ make
-
-The output will be dumped into `nosetests.xml`, which you can then analyse however you want - using a CI platform usually makes this pretty easy.
-
-
-Credits
--------
+## Credits
 
 A lot of this was copied from and inspired by Leon Smith's code: 
 
