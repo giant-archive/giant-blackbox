@@ -1,0 +1,21 @@
+# action.yml
+name: 'Blackbox Tests'
+author: 'Jon Atkinson <jon@giantmade.com>'
+description: 'Run a set of zero-knowledge tests aginst a given host.'
+inputs:
+  hostname:  # id of input
+    description: 'The hostname to test'
+    required: true
+  verify_ssl:
+    description: 'Verify SSL certificates (this may not be desirable for development/stage environments with self-signed certificates)?'
+    required: true
+    default: 'True'
+    outputs:
+  time: # id of output
+    description: 'The time the tests completed.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.hostname }}
+    - ${{ inputs.verify_ssl }}
