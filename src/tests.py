@@ -224,3 +224,6 @@ class TestDjangoConfig(BlackBoxTestCase):
         """
         response = self.session.get(self.domain_404)
         self.assertResponseDoesNotContain(response, "Django")
+
+if __name__ == '__main__':
+    unittest.main()
