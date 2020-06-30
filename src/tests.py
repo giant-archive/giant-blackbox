@@ -192,7 +192,7 @@ class TestHeaders(BlackBoxTestCase):
     """
 
     def test_gzip_enabled(self):
-        if os.getenv("BALCKBOX_TEST_GZIP", False):
+        if os.getenv("BLACKBOX_TEST_GZIP", False):
             response = self.session.get(self.domain)
             self.assertResponseHeaderEquals(response, 'content-encoding', 'gzip')
 
