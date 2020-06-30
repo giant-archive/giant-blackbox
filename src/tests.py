@@ -28,8 +28,6 @@ class BlackBoxTestCase(unittest.TestCase):
         domain = os.getenv("HOSTNAME")
         verify = bool(int(os.getenv('SSL_VERIFY', 1)))
 
-        self.www = bool(int(os.getenv('bamboo_www_check', 1)))
-
         assert "http://" in domain or 'https://' in domain
 
         # Make we remove any trailing slash.
@@ -98,8 +96,7 @@ class TestRedirects(BlackBoxTestCase):
         # Build a list of urls to check
         for protocol in ['https://', 'http://']:
             urls.append("%s%s" % (protocol, root_domain))
-            if self.www:
-                urls.append("%swww.%s" % (protocol, root_domain))
+            urls.append("%swww.%s" % (protocol, root_domain))
 
         # Pop our final domain
         urls.remove(self.domain)
@@ -111,7 +108,6 @@ class TestRedirects(BlackBoxTestCase):
         for url in urls:
             response = self.session.get(url)
             self.assertResponseIsOk(response)
-            self.assertResponseRedirectsTo(response, "%s/" % self.domain)
             self.assertResponseMaxRedirects(response, 1)
 
 
@@ -167,8 +163,7 @@ class TestSitemap(BlackBoxTestCase):
         response = self.session.get('%s/sitemap.xml' % self.domain)
         self.assertResponseIsOk(response)
         self.assertResponseHeadersContains(response, 'content-type', 'xml')
-        self.assertResponseContains(response, '<loc>')
-        self.assertResponseContains(response, '</loc>')
+        self.assertResponseContains(response, 'sitemaps.org/schemas')
 
     def test_sitemap_correct_site_object(self):
         """
