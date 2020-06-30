@@ -2,8 +2,11 @@
 FROM python:3.8.3-slim
 
 # Setup the environment
-COPY etc/requirements.txt /etc/requirements.txt
-RUN pip install -r etc/requirements.txt
+COPY poetry.lock poetry.lock
+COPY pyproject.toml pyproject.toml
+RUN pip install poetry==1.0.9
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-interaction
 
 # Move the Python code into place
 COPY src /src
