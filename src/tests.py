@@ -3,10 +3,10 @@ import re
 import unittest
 import unittest.util
 import uuid
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import requests_cache
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 run_uuid = uuid.uuid4().hex
 
@@ -25,10 +25,8 @@ class BlackBoxTestCase(unittest.TestCase):
         super(BlackBoxTestCase, self).setUp()
 
         # Get the domain from the environment variable.
-        domain = os.getenv("BAMBOO_DOMAIN")
-        verify = bool(int(os.getenv('BAMBOO_SSL_VERIFY', 1)))
-
-        self.www = bool(int(os.getenv('bamboo_www_check', 1)))
+        domain = os.getenv("HOSTNAME")
+        verify = bool(int(os.getenv('SSL_VERIFY', 1)))
 
         assert "http://" in domain or 'https://' in domain
 
@@ -98,8 +96,7 @@ class TestRedirects(BlackBoxTestCase):
         # Build a list of urls to check
         for protocol in ['https://', 'http://']:
             urls.append("%s%s" % (protocol, root_domain))
-            if self.www:
-                urls.append("%swww.%s" % (protocol, root_domain))
+            urls.append("%swww.%s" % (protocol, root_domain))
 
         # Pop our final domain
         urls.remove(self.domain)
@@ -111,7 +108,6 @@ class TestRedirects(BlackBoxTestCase):
         for url in urls:
             response = self.session.get(url)
             self.assertResponseIsOk(response)
-            self.assertResponseRedirectsTo(response, "%s/" % self.domain)
             self.assertResponseMaxRedirects(response, 1)
 
 
@@ -142,7 +138,7 @@ class TestStaticFiles(BlackBoxTestCase):
         response = self.session.get(self.domain)
 
         # Figure out the favicon
-        soup = BeautifulSoup(response.content)
+        soup = BeautifulSoup(response.content, features="html5lib")
         icon_element = soup.find("link", rel=re.compile('.*icon.*'))
 
         # If we figured out a favicon element, then we'll use that.
@@ -167,8 +163,7 @@ class TestSitemap(BlackBoxTestCase):
         response = self.session.get('%s/sitemap.xml' % self.domain)
         self.assertResponseIsOk(response)
         self.assertResponseHeadersContains(response, 'content-type', 'xml')
-        self.assertResponseContains(response, '<loc>')
-        self.assertResponseContains(response, '</loc>')
+        self.assertResponseContains(response, 'sitemaps.org/schemas')
 
     def test_sitemap_correct_site_object(self):
         """
@@ -223,4 +218,7 @@ class TestDjangoConfig(BlackBoxTestCase):
         "Django" in the 404 response. This might be naive, but it works.
         """
         response = self.session.get(self.domain_404)
-        self.assertResponseDoesNotContain(response, "Django")
+        self.assertResponseDoesNotContain(response, "Traceback")
+
+if __name__ == '__main__':
+    unittest.main()
