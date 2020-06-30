@@ -142,7 +142,7 @@ class TestStaticFiles(BlackBoxTestCase):
         response = self.session.get(self.domain)
 
         # Figure out the favicon
-        soup = BeautifulSoup(response.content)
+        soup = BeautifulSoup(response.content, features="html5lib")
         icon_element = soup.find("link", rel=re.compile('.*icon.*'))
 
         # If we figured out a favicon element, then we'll use that.
@@ -223,7 +223,7 @@ class TestDjangoConfig(BlackBoxTestCase):
         "Django" in the 404 response. This might be naive, but it works.
         """
         response = self.session.get(self.domain_404)
-        self.assertResponseDoesNotContain(response, "Django")
+        self.assertResponseDoesNotContain(response, "Traceback")
 
 if __name__ == '__main__':
     unittest.main()
