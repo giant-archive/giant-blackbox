@@ -12,7 +12,7 @@ class TestRedirects(BlackBoxBase):
     """Tests various redirects."""
 
     def test_canonical_redirect(self):
-        """"""
+        """Ensure that alternative URL schemes result in a 200 response."""
         urls = (protocol + URL.hostname for protocol in {"http://", URL.scheme})
         for url in urls:
             response = self.session.get(url)
@@ -24,6 +24,7 @@ class TestStaticFiles(BlackBoxBase):
     """Tests some of the static content on the site."""
 
     def test_robots_txt_present(self):
+        """Ensure that robots.txt is present."""
         response = self.session.get("{self.root}/robots.txt")
         checks.response_code(response, 200)
         checks.has_header(response, "content-type", "text/plain")
@@ -57,6 +58,7 @@ class TestSitemap(BlackBoxBase):
     """Tests the sitemap.xml file."""
 
     def test_sitemap(self):
+        """Ensure that sitemap.xml exists and contains valid data."""
         response = self.session.get(f"{self.root}/sitemap.xml")
         checks.response_code(response, 200)
         checks.header_equals(response, "content-type", "xml")
