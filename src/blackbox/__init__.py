@@ -2,7 +2,7 @@
 
 import requests_cache
 
-from constants import RUN_ID, SSL_VERIFY, URL
+from blackbox.constants import RUN_ID, SSL_VERIFY, URL, SCHEME
 
 
 class BlackBoxBase:
@@ -20,5 +20,5 @@ class BlackBoxBase:
     def setup_class(cls):
         """Parse the provided hostname, and set test-wide attributes."""
         assert URL.scheme, "URL must contain a valid scheme (http:// or https://)"
-        cls.root = f"{URL.scheme}{URL.hostname}"
+        cls.root = f"{SCHEME}{URL.hostname}"
         cls.random_url = f"{cls.root}/does-not-exist-{RUN_ID}"

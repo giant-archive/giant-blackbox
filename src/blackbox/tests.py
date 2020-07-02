@@ -5,7 +5,7 @@ import pytest
 from bs4 import BeautifulSoup
 
 from blackbox import BlackBoxBase, checks
-from constants import URL, TEST_GZIP
+from blackbox.constants import URL, TEST_GZIP, SCHEME
 
 
 class TestRedirects(BlackBoxBase):
@@ -13,7 +13,7 @@ class TestRedirects(BlackBoxBase):
 
     def test_canonical_redirect(self):
         """Ensure that alternative URL schemes result in a 200 response."""
-        urls = (protocol + URL.hostname for protocol in {"http://", URL.scheme})
+        urls = (protocol + URL.hostname for protocol in {"http://", SCHEME})
         for url in urls:
             response = self.session.get(url)
             checks.response_code(response, 200)
@@ -25,20 +25,20 @@ class TestStaticFiles(BlackBoxBase):
 
     def test_robots_txt_present(self):
         """Ensure that robots.txt is present."""
-        response = self.session.get("{self.root}/robots.txt")
+        response = self.session.get(f"{self.root}/robots.txt")
         checks.response_code(response, 200)
-        checks.has_header(response, "content-type", "text/plain")
+        checks.header_equals(response, "content-type", "text/plain")
 
     def test_robots_txt_disallow(self):
         """Test that we haven't left a redundant "Disallow: /" in robots.txt."""
-        response = self.session.get(f"{URL.domain}/robots.txt")
+        response = self.session.get(f"{self.root}/robots.txt")
         checks.response_code(response, 200)
         checks.response_not_contains(response, "Disallow: /")
 
     def test_favicon(self):
         """Tests that a favicon exists."""
         # First, check the source for a custom favicon declaration
-        response = self.session.get(self.domain)
+        response = self.session.get(self.root)
 
         # Figure out the favicon
         soup = BeautifulSoup(response.content, features="html5lib")
