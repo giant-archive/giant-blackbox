@@ -19,7 +19,7 @@ def redirect(response: Response, expected: str):
 def maximum_redirects(response: Response, maximum: int):
     """Ensure that the provided response did not exceed the maximum redirects."""
     redirects = len(response.history)
-    assert maximum <= redirects, f"Exceeded maximum number of redirects ({redirects}/{maximum})"
+    assert redirects <= maximum, f"Exceeded maximum number of redirects ({redirects}/{maximum})"
 
 
 def has_header(response: Response, header: str):
