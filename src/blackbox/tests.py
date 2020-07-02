@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 import pytest
 from bs4 import BeautifulSoup
 
-from tests import BlackBoxBase, checks
+from blackbox import BlackBoxBase, checks
 from constants import URL, TEST_GZIP
 
 
