@@ -4,5 +4,5 @@ echo "HOSTNAME=$1"
 echo "VERIFY_SSL=$2"
 
 cd $HOME
-HOSTNAME=$1 VERIFY_SSL=$2 pytest /src/tests.py
+HOSTNAME=$1 VERIFY_SSL=$2 pytest /src/blackbox/tests.py
 exit $?
