@@ -67,11 +67,11 @@ class TestSitemap(BlackBoxBase):
     def test_sitemap_correct_site_object(self):
         """
         This tests that the sitemap is being generated with the correct Site object.
-        We do this by checking for ".wearefarm.com" in the response.
+        We do this by checking for the hostname in the response.
         """
         response = self.session.get(f"{self.root}/sitemap.xml")
         checks.response_code(response, 200)
-        checks.response_not_contains(response, ".wearefarm.com")
+        checks.response_not_contains(response, URL.hostname)
 
 
 class TestHeaders(BlackBoxBase):
