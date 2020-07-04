@@ -14,7 +14,7 @@ class BlackBoxBase:
     )
     session.timeout = 5
     session.verify = SSL_VERIFY
-    session.headers.update({"User-Agent": "FARM Digital Black Box Test Agent 1.0"})
+    session.headers.update({"User-Agent": "Giant Digital Black Box Test Agent 1.0"})
 
     @classmethod
     def setup_class(cls):
